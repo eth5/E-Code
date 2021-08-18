@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">E-Code</string>
+    <string name="title_activity_main">E-Code</string>
+    <string name="clear">Clear</string>
+</resources>
