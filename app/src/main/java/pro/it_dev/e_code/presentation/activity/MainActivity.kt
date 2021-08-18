@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
             setContent{ Navigation() }
         }
         assetMoveData()
-        //initialAd(findViewById<ViewGroup>(R.id.adContent))
+        initialAd(findViewById<ViewGroup>(R.id.adContent))
     }
 
     private fun initialAd(viewGroup: ViewGroup){
