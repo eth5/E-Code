@@ -29,10 +29,10 @@ class MainActivity : AppCompatActivity() {
             setContent{
                 ECodeTheme() {
                     Surface(color = MaterialTheme.colors.background) {
-                        Navigation() }
+                        Navigation()
                     }
                 }
-
+            }
         }
         assetMoveData()
         initialAd(findViewById<ViewGroup>(R.id.adContent))
