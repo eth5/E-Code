@@ -12,11 +12,9 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import pro.it_dev.e_code.R
 import pro.it_dev.e_code.domain.ECode
@@ -93,7 +91,10 @@ fun FilterTextField(
         ) {
             var text by remember { mutableStateOf(filterText.value ?: "") }
             // val text by filterText.observeAsState("")
-            MyTextField(value = text) {
+            MyTextField(
+                value = text,
+                label = LocalContext.current.getString(R.string.find)
+            ) {
                 text = it
                 filter.invoke(text)
             }

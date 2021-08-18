@@ -113,9 +113,10 @@ fun ECodeLine(eCode: ECode, size: Int, onClick: () -> Unit) {
     }
 }
 @Composable
-fun MyTextField(value:String, onChange: (String)->Unit){
+fun MyTextField(value:String, label:String="", onChange: (String)->Unit){
     TextField(
         value = value,
+        label = { if (label.isNotEmpty()) Text(text = label) },
         onValueChange = {
             onChange.invoke(it)
         },
