@@ -26,7 +26,7 @@ import pro.it_dev.e_code.utils.convertToColor
 import pro.it_dev.e_code.utils.fromHtml
 
 @Composable
-fun ECodeScreen(eCodeID: Int, viewModel: ECodeViewModel = hiltViewModel()) {
+fun ECodeDetailScreen(eCodeID: Int, viewModel: ECodeViewModel = hiltViewModel()) {
     val eCode = produceState<Resource<ECode>>(
         initialValue = Resource.Loading(),
         producer = { value = viewModel.getECode(eCodeID) }

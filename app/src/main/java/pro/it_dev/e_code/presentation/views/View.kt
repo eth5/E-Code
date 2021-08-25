@@ -22,7 +22,7 @@ import pro.it_dev.e_code.utils.convertToColor
 import pro.it_dev.e_code.utils.fromHtml
 
 @Composable
-fun ECodeCard(vararg lines: String, bgColor: Color, size: Int, onClick: () -> Unit) {
+fun ECodeListEntry(vararg lines: String, bgColor: Color, size: Int, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .size(size = size.dp)
@@ -74,7 +74,7 @@ fun ECodeLine(eCode: ECode, size: Int, onClick: () -> Unit) {
                 modifier = Modifier
                     .padding(1.dp)
             ) {
-                ECodeCard(
+                ECodeListEntry(
                     "E${eCode.code}",
                     bgColor = eCode.color.convertToColor(),
                     size = size

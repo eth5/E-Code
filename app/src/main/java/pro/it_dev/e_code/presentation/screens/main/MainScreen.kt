@@ -20,7 +20,7 @@ import androidx.navigation.NavController
 import pro.it_dev.e_code.R
 import pro.it_dev.e_code.domain.ECode
 import pro.it_dev.e_code.presentation.nav.Screen
-import pro.it_dev.e_code.presentation.views.ECodeCard
+import pro.it_dev.e_code.presentation.views.ECodeListEntry
 import pro.it_dev.e_code.presentation.views.ECodeLine
 import pro.it_dev.e_code.presentation.views.MyTextField
 import pro.it_dev.e_code.presentation.views.StateWrapper
@@ -141,7 +141,7 @@ fun ECodeListStateWrapper(eCodeList:Resource<List<ECode>>, navController: NavCon
             }
         }
     ) {
-        GridECode(list = it.data!!, 60) {
+        GridECodeList(list = it.data!!, 60) {
             navController.navigate(Screen.ECodeScreen.route + "/${it.id}")
         }
     }
@@ -174,13 +174,13 @@ fun RowECode(list: List<ECode>, size: Int, onClick: (ECode) -> Unit) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun GridECode(list: List<ECode>, size: Int, onClick: (ECode) -> Unit) {
+fun GridECodeList(list: List<ECode>, size: Int, onClick: (ECode) -> Unit) {
     LazyVerticalGrid(
         cells = GridCells.Adaptive(minSize = size.dp),
         contentPadding = PaddingValues(5.dp),
     ) {
         items(list) {
-            ECodeCard(
+            ECodeListEntry(
                 "E${it.code}",
                 it.name,
                 bgColor = it.color.convertToColor(),

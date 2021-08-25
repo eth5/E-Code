@@ -1,20 +1,13 @@
 package pro.it_dev.e_code.presentation.nav
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
-import dagger.hilt.android.internal.lifecycle.HiltViewModelFactory
-import pro.it_dev.e_code.presentation.screens.ecode.ECodeScreen
-import pro.it_dev.e_code.presentation.screens.ecode.ECodeViewModel
+import pro.it_dev.e_code.presentation.screens.ecode.ECodeDetailScreen
 import pro.it_dev.e_code.presentation.screens.main.MainScreen
-import pro.it_dev.e_code.presentation.screens.main.MainScreenViewModel
 
 @Composable
 fun Navigation(){
@@ -33,7 +26,7 @@ fun Navigation(){
             )
         ){ entry->
             val eCodeId = entry.arguments?.getInt("id") ?: -1
-            ECodeScreen(eCodeID = eCodeId)
+            ECodeDetailScreen(eCodeID = eCodeId)
         }
     }
 }

@@ -2,7 +2,7 @@ package pro.it_dev.e_code.presentation.nav
 
 sealed class Screen(val route:String){
     object MainScreen:Screen("main_screen")
-    object ECodeScreen:Screen("ecode_screen")
+    object ECodeScreen:Screen("ecode_detail_screen")
 
     fun withArgs(vararg args:String):String{
         return buildString {
