@@ -15,6 +15,7 @@ import pro.it_dev.e_code.presentation.nav.Navigation
 import pro.it_dev.e_code.presentation.ui.theme.ECodeTheme
 import pro.it_dev.e_code.repository.IRepository
 import pro.it_dev.e_code.utils.AssetMover
+import pro.it_dev.e_code.utils.Constants.DB_FILENAME
 import java.io.File
 import javax.inject.Inject
 
@@ -49,8 +50,8 @@ class MainActivity : AppCompatActivity() {
         initialBanner(this, adView)
     }
     private fun assetMoveData(){
-        if (!dbIsPresent(applicationContext.filesDir.path + "/ecode_base.db")){
-            AssetMover().copyFromAssetsToLocalStorage("ecode_base.db", applicationContext)
+        if (!dbIsPresent(applicationContext.filesDir.path + "/${DB_FILENAME}")){
+            AssetMover().copyFromAssetsToLocalStorage(DB_FILENAME, applicationContext)
         }
     }
     private fun dbIsPresent(pathToFile:String):Boolean {
