@@ -1,4 +1,4 @@
-package pro.it_dev.e_code.data.utils
+package pro.it_dev.e_code.utils
 
 import android.content.Context
 import java.io.File

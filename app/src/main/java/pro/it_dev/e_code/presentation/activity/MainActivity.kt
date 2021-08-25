@@ -10,9 +10,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import pro.it_dev.e_code.R
 import pro.it_dev.e_code.ad.createBanner
 import pro.it_dev.e_code.ad.initialBanner
-import pro.it_dev.e_code.data.IData
-import pro.it_dev.e_code.data.utils.AssetMover
-import pro.it_dev.e_code.presentation.activity.ui.theme.ECodeTheme
+import pro.it_dev.e_code.repository.IRepository
+import pro.it_dev.e_code.utils.AssetMover
+import pro.it_dev.e_code.presentation.ui.theme.ECodeTheme
 import pro.it_dev.e_code.presentation.nav.Navigation
 import javax.inject.Inject
 
@@ -20,7 +20,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     @Inject
-    lateinit var data: IData
+    lateinit var repository: IRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -1,4 +1,4 @@
-package pro.it_dev.e_code.data.room
+package pro.it_dev.e_code.repository.room
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow

@@ -1,4 +1,4 @@
-package pro.it_dev.e_code.presentation.activity.ui.theme
+package pro.it_dev.e_code.presentation.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

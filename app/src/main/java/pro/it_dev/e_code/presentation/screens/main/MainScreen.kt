@@ -20,9 +20,9 @@ import androidx.navigation.NavController
 import pro.it_dev.e_code.R
 import pro.it_dev.e_code.domain.ECode
 import pro.it_dev.e_code.presentation.nav.Screen
-import pro.it_dev.e_code.presentation.view.ECodeCard
-import pro.it_dev.e_code.presentation.view.ECodeLine
-import pro.it_dev.e_code.presentation.view.MyTextField
+import pro.it_dev.e_code.presentation.views.ECodeCard
+import pro.it_dev.e_code.presentation.views.ECodeLine
+import pro.it_dev.e_code.presentation.views.MyTextField
 import pro.it_dev.e_code.utils.convertToColor
 
 @Composable

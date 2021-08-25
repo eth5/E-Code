@@ -6,12 +6,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import pro.it_dev.e_code.data.IData
+import pro.it_dev.e_code.repository.IRepository
 import pro.it_dev.e_code.domain.ECode
 import javax.inject.Inject
 
 @HiltViewModel
-class MainScreenViewModel @Inject constructor(private val  data: IData) : ViewModel() {
+class MainScreenViewModel @Inject constructor(private val  repository: IRepository) : ViewModel() {
 
     private val map = mutableMapOf<String,ECode>()
     private val originSet = mutableSetOf<ECode>()
@@ -26,7 +26,7 @@ class MainScreenViewModel @Inject constructor(private val  data: IData) : ViewMo
 
     init {
         viewModelScope.launch {
-            data.getAll {
+            repository.getAll {
                 originSet.clear()
                 originSet.addAll(it)
                 updateLiveData(originSet)

@@ -1,10 +1,10 @@
-package pro.it_dev.e_code.data
+package pro.it_dev.e_code.repository
 
 import kotlinx.coroutines.*
-import pro.it_dev.e_code.data.room.ECodeDatabase
+import pro.it_dev.e_code.repository.room.ECodeDatabase
 import pro.it_dev.e_code.domain.ECode
 
-class RoomData(private val roomDatabase: ECodeDatabase):IData {
+class RoomRepository(private val roomDatabase: ECodeDatabase): IRepository {
 
     override fun getAll(result: (List<ECode>) -> Unit) {
         GlobalScope.launch(Dispatchers.Main) {
