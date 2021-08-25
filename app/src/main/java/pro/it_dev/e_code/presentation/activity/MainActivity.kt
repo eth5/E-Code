@@ -9,8 +9,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.ComposeView
 import dagger.hilt.android.AndroidEntryPoint
 import pro.it_dev.e_code.R
-import pro.it_dev.e_code.ad.createBanner
-import pro.it_dev.e_code.ad.initialBanner
+import pro.it_dev.e_code.ad.AdBannerUtil
 import pro.it_dev.e_code.presentation.nav.Navigation
 import pro.it_dev.e_code.presentation.ui.theme.ECodeTheme
 import pro.it_dev.e_code.repository.IRepository
@@ -45,9 +44,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initialAd(viewGroup: ViewGroup){
-        val adView = createBanner(this)
+        val adUtil = AdBannerUtil()
+        val adView = adUtil.createBanner(this)
         viewGroup.addView(adView)
-        initialBanner(this, adView)
+        adUtil.initialBanner(this, adView)
     }
     private fun assetMoveData(){
         if (!dbIsPresent(applicationContext.filesDir.path + "/${DB_FILENAME}")){
