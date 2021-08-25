@@ -6,8 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import pro.it_dev.e_code.repository.IRepository
 import pro.it_dev.e_code.domain.ECode
+import pro.it_dev.e_code.repository.IRepository
+import pro.it_dev.e_code.utils.Resource
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,30 +20,32 @@ class MainScreenViewModel @Inject constructor(private val  repository: IReposito
     private val _filteredString = MutableLiveData<String>()
 
     private val _filteredECodes = MutableLiveData<List<ECode>>()
-    private val _eCodes = MutableLiveData<List<ECode>>()
-    val eCodes:LiveData<List<ECode>> get() = _eCodes
+
+    private val _eCodes = MutableLiveData<Resource<List<ECode>>>(Resource.Loading())
+    val eCodes:LiveData<Resource<List<ECode>>> get() = _eCodes
+
     val filteredECodes:LiveData<List<ECode>> get() = _filteredECodes
     val filteredString:LiveData<String> get()= _filteredString
 
     init {
         viewModelScope.launch {
-            repository.getAll {
+            val list = repository.getAll()
+            if (list is Resource.Success){
                 originSet.clear()
-                originSet.addAll(it)
-                updateLiveData(originSet)
-                listToMap(collection = originSet, map = map)
+                originSet.addAll(list.data!!)
+                listToMap(
+                    collection = originSet,
+                    map = map
+                )
             }
+            _eCodes.value = list
         }
     }
     private fun listToMap(collection:Collection<ECode>, map:MutableMap<String,ECode>){
         collection.forEach {
-            println("Add to map ${it.code}")
             if (map.containsKey(it.code)) throw IllegalStateException("Double key in map! ${it.code}")
             map[it.code] = it
         }
-    }
-    private fun updateLiveData(collection:Collection<ECode>){
-        _eCodes.postValue(collection.toList())
     }
 
     fun filterECodes(value:String){

@@ -13,36 +13,50 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import pro.it_dev.e_code.R
 import pro.it_dev.e_code.domain.ECode
+import pro.it_dev.e_code.presentation.views.ProgressBarInBox
+import pro.it_dev.e_code.presentation.views.StateWrapper
+import pro.it_dev.e_code.utils.Resource
 import pro.it_dev.e_code.utils.convertToColor
 import pro.it_dev.e_code.utils.fromHtml
 
 @Composable
-fun ECodeScreen(eCodeID:Int, viewModel: ECodeViewModel = hiltViewModel()) {
-    viewModel.loadECode(eCodeID)
-    val eCode by viewModel.eCode.observeAsState(null)
-    if (eCode==null){
-        FullScreenText(text = "Loading...")
-        return
-    }
-    else
-        DrawECode(eCode = eCode!!)
+fun ECodeScreen(eCodeID: Int, viewModel: ECodeViewModel = hiltViewModel()) {
+    val eCode = produceState<Resource<ECode>>(
+        initialValue = Resource.Loading(),
+        producer = { value = viewModel.getECode(eCodeID) }
+    ).value
+    ECodeStateWrapper(eCode = eCode)
 }
 
 @Composable
-fun FullScreenText(text:String){
-    Box (
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ){
-        Text(text = text)
+fun ECodeStateWrapper(eCode: Resource<ECode>) {
+    StateWrapper(
+        state = eCode,
+        onLoad = { ProgressBarInBox() },
+        onError = {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = it.message ?: LocalContext.current.getString(R.string.unknown_error),
+                    color = Color.Red
+                )
+            }
+        }
+    ) {
+        ECodeInfo(eCode = eCode.data!!)
     }
 }
 
 @Composable
-fun DrawECode(eCode:ECode){
+fun ECodeInfo(eCode: ECode) {
 
     Box(
         modifier = Modifier
@@ -57,12 +71,12 @@ fun DrawECode(eCode:ECode){
                 .fillMaxSize(),
             shape = RoundedCornerShape(10.dp),// MaterialTheme.shapes.small
         ) {
-            Box (
+            Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .padding(5.dp)
                     .verticalScroll(rememberScrollState())
-            ){
+            ) {
                 Text(
                     modifier = Modifier
                         .fillMaxSize()

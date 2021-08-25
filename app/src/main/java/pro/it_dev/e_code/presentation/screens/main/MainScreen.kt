@@ -23,6 +23,8 @@ import pro.it_dev.e_code.presentation.nav.Screen
 import pro.it_dev.e_code.presentation.views.ECodeCard
 import pro.it_dev.e_code.presentation.views.ECodeLine
 import pro.it_dev.e_code.presentation.views.MyTextField
+import pro.it_dev.e_code.presentation.views.StateWrapper
+import pro.it_dev.e_code.utils.Resource
 import pro.it_dev.e_code.utils.convertToColor
 
 @Composable
@@ -41,10 +43,8 @@ fun MainScreen(navController: NavController, viewModel: MainScreenViewModel= hil
             contentAlignment = Alignment.BottomCenter
         ) {
 
-            val list by viewModel.eCodes.observeAsState(initial = emptyList())
-            GridECode(list = list, 60) {
-                navController.navigate(Screen.ECodeScreen.route + "/${it.id}")
-            }
+            val list by viewModel.eCodes.observeAsState(Resource.Loading())
+            ECodeListStateWrapper(eCodeList = list, navController = navController)
         }
         Box(
             modifier = Modifier
@@ -113,6 +113,36 @@ fun FilterTextField(
                         )
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun ECodeListStateWrapper(eCodeList:Resource<List<ECode>>, navController: NavController) {
+    StateWrapper(
+        state = eCodeList,
+        onLoad = {
+            Box (
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ){
+                CircularProgressIndicator()
+            }
+        },
+        onError = {
+            Box (
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ){
+                Text(
+                    text = it.message ?: LocalContext.current.getString(R.string.unknown_error),
+                    color = Color.Red
+                    )
+            }
+        }
+    ) {
+        GridECode(list = it.data!!, 60) {
+            navController.navigate(Screen.ECodeScreen.route + "/${it.id}")
         }
     }
 }

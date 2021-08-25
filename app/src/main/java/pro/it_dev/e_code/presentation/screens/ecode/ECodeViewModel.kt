@@ -1,21 +1,19 @@
 package pro.it_dev.e_code.presentation.screens.ecode
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import pro.it_dev.e_code.repository.IRepository
+import kotlinx.coroutines.delay
 import pro.it_dev.e_code.domain.ECode
+import pro.it_dev.e_code.repository.IRepository
+import pro.it_dev.e_code.utils.Resource
 import javax.inject.Inject
 
 @HiltViewModel
-class ECodeViewModel @Inject constructor(private val  repository: IRepository):ViewModel() {
-    private val _eCode = MutableLiveData<ECode>()
-    val eCode:LiveData<ECode> get() = _eCode
+class ECodeViewModel @Inject constructor (
+    private val  repository: IRepository
+    ):ViewModel() {
 
-    fun loadECode(id:Int){
-        repository.getById(id){
-            _eCode.postValue(it)
-        }
+    suspend fun getECode(id:Int): Resource<ECode>{
+        return repository.getById(id)
     }
 }

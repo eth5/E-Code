@@ -3,4 +3,5 @@
     <string name="title_activity_main">E-Code</string>
     <string name="clear">Clear</string>
     <string name="find">Find</string>
+    <string name="unknown_error">Unknown error!</string>
 </resources>

@@ -1,34 +1,36 @@
 package pro.it_dev.e_code.repository
 
-import kotlinx.coroutines.*
-import pro.it_dev.e_code.repository.room.ECodeDatabase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.invoke
 import pro.it_dev.e_code.domain.ECode
+import pro.it_dev.e_code.repository.room.ECodeDatabase
+import pro.it_dev.e_code.utils.Resource
 
-class RoomRepository(private val roomDatabase: ECodeDatabase): IRepository {
-
-    override fun getAll(result: (List<ECode>) -> Unit) {
-        GlobalScope.launch(Dispatchers.Main) {
-            val list = runBlocking (Dispatchers.IO){
-                roomDatabase.dataECode().getAllECodes()
-            }
-
-            result.invoke(list)
+class RoomRepository(private val roomDatabase: ECodeDatabase) : IRepository {
+    override suspend fun getAll(): Resource<List<ECode>> {
+        return try {
+            val eCode = (Dispatchers.IO){ roomDatabase.dataECode().getAllECodes() }
+            Resource.Success(eCode)
+        } catch (e: Exception) {
+            Resource.Error(e.message)
         }
     }
 
-    override fun getById(id: Int, result: (ECode) -> Unit) {
-        GlobalScope.launch {
-            val eCode = runBlocking (Dispatchers.IO){
-                roomDatabase.dataECode().getECodeById(id)
-            }
-            result.invoke(eCode)
+    override suspend fun getById(id: Int): Resource<ECode> {
+        return try {
+            val eCode = (Dispatchers.IO){ roomDatabase.dataECode().getECodeById(id) }
+            Resource.Success(eCode)
+        } catch (e: Exception) {
+            Resource.Error(e.message)
         }
     }
 
-    override fun saveAll(list: List<ECode>, result: (Boolean) -> Unit) {
-        GlobalScope.launch { // todo refactor scope
-            roomDatabase.dataECode().insertAllECodes( *list.toTypedArray() )
-            result.invoke(true)
+    override suspend fun saveAll(list: List<ECode>): Resource<String> {
+        return try {
+            roomDatabase.dataECode().insertAllECodes(*list.toTypedArray())
+            Resource.Success("Ok")
+        } catch (e: Exception) {
+            Resource.Error(e.message)
         }
     }
 }
