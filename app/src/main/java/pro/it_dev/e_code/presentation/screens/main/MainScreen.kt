@@ -40,6 +40,7 @@ fun MainScreen(navController: NavController, viewModel: MainScreenViewModel= hil
                 .fillMaxSize(),
             contentAlignment = Alignment.BottomCenter
         ) {
+
             val list by viewModel.eCodes.observeAsState(initial = emptyList())
             GridECode(list = list, 60) {
                 navController.navigate(Screen.ECodeScreen.route + "/${it.id}")
