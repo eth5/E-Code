@@ -99,9 +99,11 @@ dependencies {
     //implementation 'androidx.ui:ui-foundation:0.1.0-dev03'
     // Material Design
     implementation("androidx.compose.material:material:$compose_version")
+
     // Material design icons
-    implementation("androidx.compose.material:material-icons-core:$compose_version")
-    implementation("androidx.compose.material:material-icons-extended:$compose_version")
+    //implementation("androidx.compose.material:material-icons-core:$compose_version")
+    //implementation("androidx.compose.material:material-icons-extended:$compose_version")
+
     // Integration with observables
 
     implementation("androidx.compose.runtime:runtime-livedata:$compose_version")
