@@ -14,12 +14,13 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import pro.it_dev.e_code.domain.ECode
 import pro.it_dev.e_code.utils.convertToColor
 import pro.it_dev.e_code.utils.fromHtml
 
 @Composable
-fun ECodeScreen(eCodeID:Int, viewModel: ECodeViewModel) {
+fun ECodeScreen(eCodeID:Int, viewModel: ECodeViewModel = hiltViewModel()) {
     viewModel.loadECode(eCodeID)
     val eCode by viewModel.eCode.observeAsState(null)
     if (eCode==null){

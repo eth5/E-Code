@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import pro.it_dev.e_code.R
@@ -25,7 +26,7 @@ import pro.it_dev.e_code.presentation.view.MyTextField
 import pro.it_dev.e_code.utils.convertToColor
 
 @Composable
-fun MainScreen(navController: NavController, viewModel: MainScreenViewModel) {
+fun MainScreen(navController: NavController, viewModel: MainScreenViewModel= hiltViewModel()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
