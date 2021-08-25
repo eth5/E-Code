@@ -8,6 +8,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -66,7 +67,7 @@ fun ECodeInfo(eCode: ECode) {
                 Brush.verticalGradient(
                     listOf(
                         eCode.color.convertToColor(),
-                        Color.White,
+                        MaterialTheme.colors.background,
                         eCode.color.convertToColor()
                     )
                 )
@@ -76,7 +77,6 @@ fun ECodeInfo(eCode: ECode) {
         Card(
             modifier = Modifier
                 .padding(5.dp)
-                // .background(Color.Red)
                 .fillMaxSize(),
             shape = RoundedCornerShape(10.dp),// MaterialTheme.shapes.small
         ) {

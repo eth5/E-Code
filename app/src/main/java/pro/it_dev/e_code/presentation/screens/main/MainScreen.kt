@@ -6,11 +6,13 @@ import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -32,7 +34,6 @@ fun MainScreen(navController: NavController, viewModel: MainScreenViewModel= hil
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.LightGray)
             .padding(2.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -42,13 +43,11 @@ fun MainScreen(navController: NavController, viewModel: MainScreenViewModel= hil
                 .fillMaxSize(),
             contentAlignment = Alignment.BottomCenter
         ) {
-
             val list by viewModel.eCodes.observeAsState(Resource.Loading())
             ECodeListStateWrapper(eCodeList = list, navController = navController)
         }
         Box(
             modifier = Modifier
-                .background(Color.DarkGray)
         ) {
             val list by viewModel.filteredECodes.observeAsState(initial = emptyList())
             FilterTextField(list, viewModel.filteredString, filter = viewModel::filterECodes){
@@ -66,7 +65,6 @@ fun FilterTextField(
     filter: (String) -> Unit,
     onClick: (ECode) -> Unit
 ) {
-
     Column(
         modifier = Modifier
             .wrapContentHeight(align = Alignment.Bottom)
@@ -82,7 +80,10 @@ fun FilterTextField(
                     .wrapContentHeight(align = Alignment.Bottom),
                 propagateMinConstraints = true
             ) {
-                ResultOfFind(list = list, size = size, onClick = onClick)
+                ResultOfFind(
+                    list = list,
+                    size = size,
+                    onClick = onClick)
             }
         }
         Box(
@@ -92,7 +93,6 @@ fun FilterTextField(
             contentAlignment = Alignment.CenterEnd
         ) {
             var text by remember { mutableStateOf(filterText.value ?: "") }
-            // val text by filterText.observeAsState("")
             MyTextField(
                 value = text,
                 label = LocalContext.current.getString(R.string.find)
@@ -101,7 +101,7 @@ fun FilterTextField(
                 filter.invoke(text)
             }
             if (text.isNotEmpty()) {
-                Button(
+                TextButton(
                     onClick = {
                         text = ""
                         filter.invoke(text)
