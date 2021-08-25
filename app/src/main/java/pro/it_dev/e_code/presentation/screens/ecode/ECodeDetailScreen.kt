@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -61,7 +62,15 @@ fun ECodeInfo(eCode: ECode) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(eCode.color.convertToColor())
+            .background(
+                Brush.verticalGradient(
+                    listOf(
+                        eCode.color.convertToColor(),
+                        Color.White,
+                        eCode.color.convertToColor()
+                    )
+                )
+            )
     ) {
         // ECodeCard("E${eCode.code}", bgColor = Color.Green, size = 50) {}
         Card(
