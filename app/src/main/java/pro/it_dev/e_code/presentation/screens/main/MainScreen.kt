@@ -1,18 +1,18 @@
 package pro.it_dev.e_code.presentation.screens.main
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -21,9 +21,10 @@ import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import pro.it_dev.e_code.R
 import pro.it_dev.e_code.domain.ECode
+import pro.it_dev.e_code.domain.ECodeMinimal
 import pro.it_dev.e_code.presentation.nav.Screen
-import pro.it_dev.e_code.presentation.views.ECodeListEntry
 import pro.it_dev.e_code.presentation.views.ECodeLine
+import pro.it_dev.e_code.presentation.views.ECodeListEntry
 import pro.it_dev.e_code.presentation.views.MyTextField
 import pro.it_dev.e_code.presentation.views.StateWrapper
 import pro.it_dev.e_code.utils.Resource
@@ -60,10 +61,10 @@ fun MainScreen(navController: NavController, viewModel: MainScreenViewModel= hil
 
 @Composable
 fun FilterTextField(
-    list: List<ECode>,
+    list: List<ECodeMinimal>,
     filterText: LiveData<String>,
     filter: (String) -> Unit,
-    onClick: (ECode) -> Unit
+    onClick: (ECodeMinimal) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -118,7 +119,7 @@ fun FilterTextField(
 }
 
 @Composable
-fun ECodeListStateWrapper(eCodeList:Resource<List<ECode>>, navController: NavController) {
+fun ECodeListStateWrapper(eCodeList:Resource<List<ECodeMinimal>>, navController: NavController) {
     StateWrapper(
         state = eCodeList,
         onLoad = {
@@ -148,13 +149,13 @@ fun ECodeListStateWrapper(eCodeList:Resource<List<ECode>>, navController: NavCon
 }
 
 @Composable
-fun ResultOfFind(list: List<ECode>,size:Int, onClick: (ECode) -> Unit){
+fun ResultOfFind(list: List<ECodeMinimal>,size:Int, onClick: (ECodeMinimal) -> Unit){
     RowECode(list = list, size = size, onClick = onClick)
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun RowECode(list: List<ECode>, size: Int, onClick: (ECode) -> Unit) {
+fun RowECode(list: List<ECodeMinimal>, size: Int, onClick: (ECodeMinimal) -> Unit) {
     Box(
         modifier = Modifier,
         contentAlignment = Alignment.BottomCenter
@@ -174,7 +175,7 @@ fun RowECode(list: List<ECode>, size: Int, onClick: (ECode) -> Unit) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun GridECodeList(list: List<ECode>, size: Int, onClick: (ECode) -> Unit) {
+fun GridECodeList(list: List<ECodeMinimal>, size: Int, onClick: (ECodeMinimal) -> Unit) {
     LazyVerticalGrid(
         cells = GridCells.Adaptive(minSize = size.dp),
         contentPadding = PaddingValues(5.dp),

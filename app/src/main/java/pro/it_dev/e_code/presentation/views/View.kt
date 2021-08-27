@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pro.it_dev.e_code.domain.ECode
+import pro.it_dev.e_code.domain.ECodeMinimal
 import pro.it_dev.e_code.utils.convertToColor
 import pro.it_dev.e_code.utils.fromHtml
 
@@ -54,7 +55,7 @@ fun ECodeListEntry(vararg lines: String, bgColor: Color, size: Int, onClick: () 
 }
 
 @Composable
-fun ECodeLine(eCode: ECode, size: Int, onClick: () -> Unit) {
+fun ECodeLine(eCode: ECodeMinimal, size: Int, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -98,13 +99,6 @@ fun ECodeLine(eCode: ECode, size: Int, onClick: () -> Unit) {
                             color = eCode.color.convertToColor()
                         )
                     }
-                    Text(
-                        text = eCode.description.fromHtml().toString(),
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                        fontSize = 11.sp
-                    )
-
                 }
             }
 

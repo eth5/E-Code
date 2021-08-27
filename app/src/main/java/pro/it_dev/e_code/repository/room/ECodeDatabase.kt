@@ -6,5 +6,5 @@ import pro.it_dev.e_code.domain.ECode
 
 @Database(entities = [ECode::class], version = 1)
 abstract class ECodeDatabase:RoomDatabase() {
-    abstract fun dataECode(): DataECode
+    abstract fun dataECode(): ECodeDao
 }

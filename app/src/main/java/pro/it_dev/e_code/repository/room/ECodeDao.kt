@@ -4,9 +4,14 @@ import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import pro.it_dev.e_code.domain.ECode
+import pro.it_dev.e_code.domain.ECodeMinimal
 
 @Dao
-interface DataECode {
+interface ECodeDao {
+
+    @Query("SELECT id, code, name, color, danger_status FROM e_code")
+    fun getAllECodesMinimal(): List<ECodeMinimal>
+
     @Query("SELECT * FROM e_code")
     fun getAllECodes(): List<ECode>
 
