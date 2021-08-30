@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initialAd(viewGroup: ViewGroup){
+        return
         val adUtil = AdBannerUtil()
         val adView = adUtil.createBanner(this)
         viewGroup.addView(adView)
