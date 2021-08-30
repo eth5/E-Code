@@ -2,12 +2,23 @@ package pro.it_dev.e_code.presentation.activity
 
 import android.os.Bundle
 import android.view.ViewGroup
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import pro.it_dev.e_code.R
 import pro.it_dev.e_code.ad.AdBannerUtil
 import pro.it_dev.e_code.presentation.nav.Navigation
@@ -24,29 +35,29 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        val adContent = findViewById<ViewGroup>(R.id.adContent)
-
-        findViewById<ComposeView>(R.id.main_container).apply {
-            setContent{
-                ECodeTheme() {
-                    Surface(color = MaterialTheme.colors.background) {
-                        adContent.setBackgroundColor(MaterialTheme.colors.background.toArgb())
+        assetMoveData()
+        setContent{
+            ECodeTheme() {
+                Surface(
+                    color = MaterialTheme.colors.background,
+                    modifier = Modifier.fillMaxSize()
+                    ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally){
+                        AndroidView(
+                            factory = { ctx ->
+                                val adUtil = AdBannerUtil()
+                                val adView = adUtil.createBanner(ctx,"ca-app-pub-6127542757275882/1103625381")
+                                adUtil.initialBanner(ctx, adView)
+                                adView
+                            }
+                        )
                         Navigation()
                     }
                 }
             }
         }
-        assetMoveData()
-        initialAd(adContent)
     }
 
-    private fun initialAd(viewGroup: ViewGroup){
-        val adUtil = AdBannerUtil()
-        val adView = adUtil.createBanner(this)
-        viewGroup.addView(adView)
-        adUtil.initialBanner(this, adView)
-    }
     private fun assetMoveData(){
         if (!dbIsPresent(applicationContext.filesDir.path + "/${DB_FILENAME}")){
             AssetMover().copyFromAssetsToLocalStorage(DB_FILENAME, applicationContext)
