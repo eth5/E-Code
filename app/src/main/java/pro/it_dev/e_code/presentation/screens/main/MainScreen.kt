@@ -23,6 +23,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -79,11 +80,12 @@ fun SearchBar(searchRequest:MutableState<String>, modifier: Modifier, onValueCha
                 onValueChange(it)
                 text = it
             },
+            textStyle = TextStyle(color = MaterialTheme.colors.primary),
             maxLines = 1,
             singleLine = true,
             modifier = Modifier
                 .fillMaxWidth()
-                .border(1.dp, Color.Black, RoundedCornerShape(10.dp))
+                .border(1.dp, MaterialTheme.colors.secondary, RoundedCornerShape(10.dp))
                 .padding(horizontal = 20.dp, vertical = 12.dp)
                 .shadow(0.dp, RoundedCornerShape(10.dp))
                 .padding(end = 40.dp)
@@ -169,7 +171,8 @@ fun GridECodeList(list: List<ECodeMinimal>, size: Int, onClick: (ECodeMinimal) -
     else{
         Box(
             modifier = Modifier
-                .border(1.dp, Color.Black, RoundedCornerShape(20.dp))
+                .padding(2.dp)
+                .border(1.dp, MaterialTheme.colors.secondary, RoundedCornerShape(20.dp))
                 .clip(RoundedCornerShape(20.dp)),
             contentAlignment = Alignment.Center
         ){

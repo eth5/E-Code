@@ -33,7 +33,7 @@ fun ECodeListEntry(vararg lines: String, bgColor: Color, size: Int, onClick: () 
             .clickable(onClick = onClick),
         elevation = 10.dp,
         shape = RoundedCornerShape(20.dp), // MaterialTheme.shapes.small,
-        border = BorderStroke(1.dp, Color.DarkGray),
+        border = BorderStroke(1.dp, MaterialTheme.colors.secondaryVariant),
         backgroundColor = bgColor
     ) {
         Column(

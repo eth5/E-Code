@@ -1,12 +1,10 @@
 package pro.it_dev.e_code.presentation.screens.ecode
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -73,12 +71,12 @@ fun ECodeInfo(eCode: ECode) {
                 )
             )
     ) {
-        // ECodeCard("E${eCode.code}", bgColor = Color.Green, size = 50) {}
         Card(
             modifier = Modifier
                 .padding(5.dp)
                 .fillMaxSize(),
-            shape = RoundedCornerShape(10.dp),// MaterialTheme.shapes.small
+            shape = RoundedCornerShape(10.dp),
+            border = BorderStroke(1.dp,MaterialTheme.colors.secondary)
         ) {
             Box(
                 contentAlignment = Alignment.Center,
