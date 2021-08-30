@@ -4,4 +4,6 @@
     <string name="clear">Clear</string>
     <string name="find">Find</string>
     <string name="unknown_error">Unknown error!</string>
+    <string name="search_result">Search result</string>
+    <string name="not_found">Not Found</string>
 </resources>

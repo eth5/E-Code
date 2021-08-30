@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.*
@@ -22,6 +23,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -41,6 +43,14 @@ fun MainScreen(navController: NavController, viewModel: MainScreenViewModel = hi
             .padding(2.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val searchRequest by remember { viewModel.searchRequest }
+        if (searchRequest.isNotEmpty()) {
+            Text(
+                text = LocalContext.current.getString(R.string.search_result),
+                color = MaterialTheme.colors.primary,
+                fontWeight = FontWeight.Bold
+            )
+        }
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -50,7 +60,9 @@ fun MainScreen(navController: NavController, viewModel: MainScreenViewModel = hi
             val list by remember { viewModel.listECodes }
             ECodeListStateWrapper(eCodeList = list, navController = navController)
         }
-        SearchBar(viewModel.searchRequest, modifier = Modifier.fillMaxWidth(), onValueChange = viewModel::searchECodes)
+        SearchBar(viewModel.searchRequest, modifier = Modifier.fillMaxWidth()){
+            viewModel.searchECodes(it)
+        }
     }
 }
 
@@ -148,26 +160,34 @@ fun ECodeListStateWrapper(eCodeList: Resource<List<ECodeMinimal>>, navController
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun GridECodeList(list: List<ECodeMinimal>, size: Int, onClick: (ECodeMinimal) -> Unit) {
-    Box(
-        modifier = Modifier
-            .border(1.dp, Color.Black, RoundedCornerShape(20.dp))
-            .clip(RoundedCornerShape(20.dp))
-    ){
-        LazyVerticalGrid(
-            cells = GridCells.Adaptive(minSize = size.dp),
-            contentPadding = PaddingValues(3.dp),
-        ) {
-            items(list) {
-                ECodeListEntry(
-                    "E${it.code}",
-                    it.name,
-                    bgColor = it.color.convertToColor(),
-                    size = size
-                ) {
-                    onClick.invoke(it)
+    if (list.isEmpty()) {
+        Text(
+            text = LocalContext.current.getString(R.string.not_found),
+            color = MaterialTheme.colors.primary
+            )
+    }
+    else{
+        Box(
+            modifier = Modifier
+                .border(1.dp, Color.Black, RoundedCornerShape(20.dp))
+                .clip(RoundedCornerShape(20.dp)),
+            contentAlignment = Alignment.Center
+        ){
+            LazyVerticalGrid(
+                cells = GridCells.Adaptive(minSize = size.dp),
+                contentPadding = PaddingValues(5.dp),
+            ) {
+                items(list) {
+                    ECodeListEntry(
+                        "E${it.code}",
+                        it.name,
+                        bgColor = it.color.convertToColor(),
+                        size = size
+                    ) {
+                        onClick.invoke(it)
+                    }
                 }
             }
         }
     }
-
 }
