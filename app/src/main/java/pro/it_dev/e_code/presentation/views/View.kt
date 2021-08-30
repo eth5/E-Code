@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,12 +28,12 @@ fun ECodeListEntry(vararg lines: String, bgColor: Color, size: Int, onClick: () 
         modifier = Modifier
             .size(size = size.dp)
             .padding(1.dp)
-            //.border(1.dp,Color.Black, CircleShape)
-            //.shadow(1.dp, CircleShape)
+            // .border(1.dp,Color.Black, CircleShape)
+            .shadow(2.dp, RoundedCornerShape(20.dp))
             .clickable(onClick = onClick),
         elevation = 10.dp,
-        shape = MaterialTheme.shapes.small,
-        border = BorderStroke(1.dp, Color.Black),
+        shape = RoundedCornerShape(20.dp), // MaterialTheme.shapes.small,
+        border = BorderStroke(1.dp, Color.DarkGray),
         backgroundColor = bgColor
     ) {
         Column(
