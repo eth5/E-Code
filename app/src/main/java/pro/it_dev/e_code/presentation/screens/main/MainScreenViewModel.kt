@@ -1,71 +1,67 @@
 package pro.it_dev.e_code.presentation.screens.main
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import pro.it_dev.e_code.domain.ECode
 import pro.it_dev.e_code.domain.ECodeMinimal
 import pro.it_dev.e_code.repository.IRepository
 import pro.it_dev.e_code.utils.Resource
 import javax.inject.Inject
 
 @HiltViewModel
-class MainScreenViewModel @Inject constructor(private val  repository: IRepository) : ViewModel() {
+class MainScreenViewModel @Inject constructor(private val repository: IRepository) : ViewModel() {
 
-    private val map = mutableMapOf<String,ECodeMinimal>()
-    private val originSet = mutableSetOf<ECodeMinimal>()
+    private val originList = mutableListOf<ECodeMinimal>()
 
-    private val _filteredString = MutableLiveData<String>()
+    val searchRequest = mutableStateOf("")
 
-    private val _filteredECodes = MutableLiveData<List<ECodeMinimal>>()
-
-    private val _eCodes = MutableLiveData<Resource<List<ECodeMinimal>>>(Resource.Loading())
-    val eCodes:LiveData<Resource<List<ECodeMinimal>>> get() = _eCodes
-
-    val filteredECodes:LiveData<List<ECodeMinimal>> get() = _filteredECodes
-    val filteredString:LiveData<String> get()= _filteredString
+    private val _listECodes =
+        mutableStateOf<Resource<List<ECodeMinimal>>>(Resource.Success(emptyList()))
+    val listECodes: State<Resource<List<ECodeMinimal>>> get() = _listECodes
 
     init {
+        loadECodes()
+    }
+
+    fun loadECodes() {
+        if (_listECodes.value is Resource.Loading) return
+        _listECodes.value = Resource.Loading()
+
         viewModelScope.launch {
-            val list = repository.getAllMinial()
-            if (list is Resource.Success){
-                originSet.clear()
-                originSet.addAll(list.data!!)
-                listToMap(
-                    collection = originSet,
-                    map = map
-                )
+            _listECodes.value = repository.getAllMinial()
+            if (_listECodes.value is Resource.Success) originList.addAll(_listECodes.value.data!!)
+        }
+    }
+
+
+    fun searchECodes(query: String) {
+        viewModelScope.launch(Dispatchers.Default) {
+            val result = query.trim().lowercase()
+            if (result.isEmpty()) {
+                _listECodes.value = Resource.Success(originList)
+                return@launch
             }
-            _eCodes.value = list
-        }
-    }
-    private fun listToMap(collection:Collection<ECodeMinimal>, map:MutableMap<String,ECodeMinimal>){
-        collection.forEach {
-            if (map.containsKey(it.code)) throw IllegalStateException("Double key in map! ${it.code}")
-            map[it.code] = it
-        }
-    }
+            val searched = mutableListOf<ECodeMinimal>()
+            val dubl = mutableSetOf<String>()
+            result.split(" ").forEach {
 
-    fun filterECodes(value:String){
-        _filteredString.value = value
-        val filterText = value.trim().lowercase()
-        if (filterText.isEmpty()){
-            _filteredECodes.value = emptyList()
-            return
-        }
-        val filterSet = mutableSetOf<ECodeMinimal>()
-        filterText.split(" ").forEach {
-            val d = if ( it.first() == 'e' || it.first() == 'е' )
-                if (it.length > 1) it.substring(1, it.length)  else ""
-            else it
-            originSet
-                .filter { it.code.startsWith( d ) }
-                .forEach { filterSet.add( it ) }
-        }
-        _filteredECodes.value = filterSet.toList()
-    }
+                val searchString = if (it.first() == 'e' || it.first() == 'е') //todo переписать логику поиска
+                    if (it.length > 1) it.substring(1, it.length) else ""
+                else it
+                if (!dubl.contains(searchString)){
+                    dubl.add(searchString)
+                    searched.addAll(
+                        originList.filter { it.code.startsWith(searchString) }
+                    )
+                }
 
+
+            }
+            _listECodes.value = Resource.Success(searched)
+        }
+    }
 }
