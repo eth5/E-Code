@@ -47,20 +47,23 @@ class MainScreenViewModel @Inject constructor(private val repository: IRepositor
             }
             val searched = mutableListOf<ECodeMinimal>()
             val dubl = mutableSetOf<String>()
-            result.split(" ").forEach {
+            result.split(" ")
+                .filter { it.isNotEmpty() }
+                .forEach {
 
-                val searchString = if (it.first() == 'e' || it.first() == 'е') //todo переписать логику поиска
-                    if (it.length > 1) it.substring(1, it.length) else ""
-                else it
-                if (!dubl.contains(searchString)){
-                    dubl.add(searchString)
-                    searched.addAll(
-                        originList.filter { it.code.startsWith(searchString) }
-                    )
+                    val searchString =
+                        if (it.first() == 'e' || it.first() == 'е') //todo переписать логику поиска
+                            if (it.length > 1) it.substring(1, it.length) else ""
+                        else it
+                    if (!dubl.contains(searchString)) {
+                        dubl.add(searchString)
+                        searched.addAll(
+                            originList.filter { it.code.startsWith(searchString) }
+                        )
+                    }
+
+
                 }
-
-
-            }
             _listECodes.value = Resource.Success(searched)
         }
     }
