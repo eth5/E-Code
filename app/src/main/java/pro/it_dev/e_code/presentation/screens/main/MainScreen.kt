@@ -4,6 +4,7 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
@@ -11,10 +12,7 @@ import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,12 +30,18 @@ import pro.it_dev.e_code.R
 import pro.it_dev.e_code.domain.ECodeMinimal
 import pro.it_dev.e_code.presentation.nav.Screen
 import pro.it_dev.e_code.presentation.views.ECodeListEntry
+import pro.it_dev.e_code.presentation.views.FullBox
+import pro.it_dev.e_code.presentation.views.ProgressBarInBox
 import pro.it_dev.e_code.presentation.views.StateWrapper
 import pro.it_dev.e_code.utils.Resource
 import pro.it_dev.e_code.utils.convertToColor
 
 @Composable
 fun MainScreen(navController: NavController, viewModel: MainScreenViewModel = hiltViewModel()) {
+    val color = MaterialTheme.colors.surface
+    LaunchedEffect(color){
+        viewModel.surfaceColor.value = color
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -61,19 +65,24 @@ fun MainScreen(navController: NavController, viewModel: MainScreenViewModel = hi
             val list by remember { viewModel.listECodes }
             ECodeListStateWrapper(eCodeList = list, navController = navController)
         }
-        SearchBar(viewModel.searchRequest, modifier = Modifier.fillMaxWidth()){
+        SearchBar(viewModel.searchRequest, modifier = Modifier.fillMaxWidth()) {
             viewModel.searchECodes(it)
         }
     }
 }
 
 @Composable
-fun SearchBar(searchRequest:MutableState<String>, modifier: Modifier, onValueChange: (String) -> Unit) {
+fun SearchBar(
+    searchRequest: MutableState<String>,
+    modifier: Modifier,
+    onValueChange: (String) -> Unit
+) {
     Box(
         modifier = modifier.padding(1.dp)
     ) {
         var text by remember { searchRequest }
         var isHintDisplayed by remember { mutableStateOf(true) }
+        var borderSize by remember{ mutableStateOf(1.dp) }
         BasicTextField(
             value = text,
             onValueChange = {
@@ -85,11 +94,13 @@ fun SearchBar(searchRequest:MutableState<String>, modifier: Modifier, onValueCha
             singleLine = true,
             modifier = Modifier
                 .fillMaxWidth()
-                .border(1.dp, MaterialTheme.colors.secondary, RoundedCornerShape(10.dp))
+                .border(borderSize, MaterialTheme.colors.secondary, MaterialTheme.shapes.medium)
                 .padding(horizontal = 20.dp, vertical = 12.dp)
-                .shadow(0.dp, RoundedCornerShape(10.dp))
                 .padding(end = 40.dp)
-                .onFocusChanged { isHintDisplayed = !it.isFocused }
+                .onFocusChanged {
+                    isHintDisplayed = !it.isFocused
+                    borderSize = if (isHintDisplayed) 1.dp else 3.dp
+                }
         )
         if (text.isNotEmpty()) {
             TextButton(
@@ -108,14 +119,14 @@ fun SearchBar(searchRequest:MutableState<String>, modifier: Modifier, onValueCha
                         dampingRatio = Spring.DampingRatioHighBouncy
                     )
                 )
-                LaunchedEffect(key1 = "", block = {pad = 0.dp})
+                LaunchedEffect(key1 = "", block = { pad = 0.dp })
                 Text(
                     text = LocalContext.current.getString(R.string.clear),
                     modifier = Modifier.offset(x = anim)
                 )
             }
         }
-        if (isHintDisplayed && text.isEmpty()){
+        if (isHintDisplayed && text.isEmpty()) {
             Text(
                 text = "Search",
                 color = Color.Gray,
@@ -133,19 +144,9 @@ fun SearchBar(searchRequest:MutableState<String>, modifier: Modifier, onValueCha
 fun ECodeListStateWrapper(eCodeList: Resource<List<ECodeMinimal>>, navController: NavController) {
     StateWrapper(
         state = eCodeList,
-        onLoad = {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        },
+        onLoad = { ProgressBarInBox() },
         onError = {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
+            FullBox {
                 Text(
                     text = it.message ?: LocalContext.current.getString(R.string.unknown_error),
                     color = Color.Red
@@ -166,16 +167,15 @@ fun GridECodeList(list: List<ECodeMinimal>, size: Int, onClick: (ECodeMinimal) -
         Text(
             text = LocalContext.current.getString(R.string.not_found),
             color = MaterialTheme.colors.primary
-            )
-    }
-    else{
+        )
+    } else {
         Box(
             modifier = Modifier
                 .padding(2.dp)
-                .border(1.dp, MaterialTheme.colors.secondary, RoundedCornerShape(20.dp))
-                .clip(RoundedCornerShape(20.dp)),
+                .border(2.dp, MaterialTheme.colors.secondary, MaterialTheme.shapes.medium)
+                .clip(MaterialTheme.shapes.medium),
             contentAlignment = Alignment.Center
-        ){
+        ) {
             LazyVerticalGrid(
                 cells = GridCells.Adaptive(minSize = size.dp),
                 contentPadding = PaddingValues(5.dp),

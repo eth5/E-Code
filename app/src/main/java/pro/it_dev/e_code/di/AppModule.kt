@@ -16,18 +16,10 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-
     @Singleton
     @Provides
     fun provideDataBase(@ApplicationContext context:Context): IRepository {
         val path = context.filesDir.absolutePath
         return RoomRepository(Room.databaseBuilder(context, ECodeDatabase::class.java, "$path/ecode_base.db").build())
     }
-
-//    @Singleton
-//    @Provides
-//    fun provideDeviceScreen(@ApplicationContext context: Context): DeviceScreen {
-//        throw Error("")
-//        return DeviceScreen(context = context)
-//    }
 }

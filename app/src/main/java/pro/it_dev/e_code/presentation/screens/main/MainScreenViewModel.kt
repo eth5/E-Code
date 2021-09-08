@@ -1,7 +1,9 @@
 package pro.it_dev.e_code.presentation.screens.main
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,7 +15,10 @@ import pro.it_dev.e_code.utils.Resource
 import javax.inject.Inject
 
 @HiltViewModel
-class MainScreenViewModel @Inject constructor(private val repository: IRepository) : ViewModel() {
+class MainScreenViewModel @Inject constructor(
+    private val repository: IRepository,
+    val surfaceColor: MutableState<Color>
+    ) : ViewModel() {
 
     private val originList = mutableListOf<ECodeMinimal>()
 
