@@ -6,6 +6,9 @@ import java.io.FileOutputStream
 import java.io.InputStream
 
 class AssetMover {
+
+
+
     fun copyFromAssetsToLocalStorage(fileName:String, context:Context){
         val inputStream = context.assets.open(fileName)
         val nameSplit = fileName.split(".")
